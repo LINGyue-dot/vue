@@ -29,6 +29,10 @@ export function setActiveInstance(vm: Component) {
   };
 }
 
+/**
+ * 主要是挂载属性，并将当前的子实例挂载到 $children 链上
+ * @param {*} vm
+ */
 export function initLifecycle(vm: Component) {
   const options = vm.$options;
 
@@ -38,7 +42,7 @@ export function initLifecycle(vm: Component) {
     while (parent.$options.abstract && parent.$parent) {
       parent = parent.$parent;
     }
-    parent.$children.push(vm);
+    parent.$children.push(vm); // 存储到父实例的属性上
   }
 
   vm.$parent = parent;
@@ -62,8 +66,15 @@ export function lifecycleMixin(Vue: Class<Component>) {
     const vm: Component = this;
     const prevEl = vm.$el;
     const prevVnode = vm._vnode;
+
+    // 由于深度遍历，js 又是单线程所以在深度遍历时候需要将父 Vue 实例给子的所以需要 activeInstance 存储当前遍历的 Vue 实例
+    // 退出这层遍历之后还需要将其返回到上层的 Vue 实例
+    // const prevActiveInstance = activeInstance;
+    // activeInstance = vm; // activeInstance 全局变量保存当前上下文 Vue 实例
+    // 上两行等价于
     const restoreActiveInstance = setActiveInstance(vm);
-    vm._vnode = vnode;
+
+    vm._vnode = vnode; // _render() 返回的 vnode
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
@@ -74,7 +85,7 @@ export function lifecycleMixin(Vue: Class<Component>) {
       // updates
       vm.$el = vm.__patch__(prevVnode, vnode);
     }
-    restoreActiveInstance();
+    restoreActiveInstance(); // 等价于  activeInstance = prevActiveInstance;
     // update __vue__ reference
     if (prevEl) {
       prevEl.__vue__ = null;

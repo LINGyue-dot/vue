@@ -157,7 +157,7 @@ export function createPatchFunction(backend) {
     }
 
     vnode.isRootInsert = !nested; // for transition enter check
-    // 尝试创建子组件
+    // 尝试创建组件实例
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
       return;
     }
@@ -234,11 +234,14 @@ export function createPatchFunction(backend) {
     }
   }
 
+  // 尝试创建组件实例
   function createComponent(vnode, insertedVnodeQueue, parentElm, refElm) {
-    let i = vnode.data;
+    let i = vnode.data; // i 获取到的就是 init 函数
     if (isDef(i)) {
+      // 如果 vnode 是一个组件 VNode
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive;
       if (isDef((i = i.hook)) && isDef((i = i.init))) {
+        // 执行 i 函数，即之前所 merge 的 init 钩子函数 `src/create-component` componentVNodeHooks 对象
         i(vnode, false /* hydrating */);
       }
       // after calling the init hook, if the vnode is a child component
@@ -246,8 +249,9 @@ export function createPatchFunction(backend) {
       // component also has set the placeholder vnode's elm.
       // in that case we can just return the element and be done.
       if (isDef(vnode.componentInstance)) {
+        // 如果创建成功， return true 并插入到合适的 DOM
         initComponent(vnode, insertedVnodeQueue);
-        insert(parentElm, vnode.elm, refElm);
+        insert(parentElm, vnode.elm, refElm); // 由于是深度遍历所以是先将子节点插入，后再将父节点插入
         if (isTrue(isReactivated)) {
           reactivateComponent(vnode, insertedVnodeQueue, parentElm, refElm);
         }
@@ -881,6 +885,7 @@ export function createPatchFunction(backend) {
     const insertedVnodeQueue = [];
 
     if (isUndef(oldVnode)) {
+      // 组件渲染
       // empty mount (likely as component), create new root element
       isInitialPatch = true;
       createElm(vnode, insertedVnodeQueue);
