@@ -725,6 +725,7 @@ export function createPatchFunction(backend) {
     }
   }
 
+  // 组件渲染真实 DOM 以及挂载之后
   function invokeInsertHook(vnode, queue, initial) {
     // delay insert hooks for component root nodes, invoke them after the
     // element is really inserted

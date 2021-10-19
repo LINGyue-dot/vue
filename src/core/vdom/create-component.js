@@ -59,6 +59,7 @@ const componentVNodeHooks = {
     );
   },
 
+  // 触发子组件的 mounted
   insert(vnode: MountedComponentVNode) {
     const { context, componentInstance } = vnode;
     if (!componentInstance._isMounted) {

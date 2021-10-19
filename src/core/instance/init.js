@@ -58,7 +58,7 @@ export function initMixin(Vue: Class<Component>) {
     initRender(vm); // 初始化渲染
     callHook(vm, "beforeCreate"); // 触发生命周期函数
     initInjections(vm); // resolve injections before data/props
-    initState(vm); // 初始化数据
+    initState(vm); // 初始化 props data methods watch computed
     initProvide(vm); // resolve provide after data/props
     callHook(vm, "created");
 

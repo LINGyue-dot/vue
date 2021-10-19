@@ -136,7 +136,7 @@ export function lifecycleMixin(Vue: Class<Component>) {
     // call the last hook...
     vm._isDestroyed = true;
     // invoke destroy hooks on current rendered tree
-    vm.__patch__(vm._vnode, null);
+    vm.__patch__(vm._vnode, null); // 递归销毁子组件
     // fire destroyed hook
     callHook(vm, "destroyed");
     // turn off all instance listeners.
@@ -363,6 +363,7 @@ export function deactivateChildComponent(vm: Component, direct?: boolean) {
   }
 }
 
+// 执行生命周期的钩子函数
 export function callHook(vm: Component, hook: string) {
   // #7573 disable dep collection when invoking lifecycle hooks
   pushTarget();
