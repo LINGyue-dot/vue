@@ -2,7 +2,7 @@
  * @Author: qianlong github:https://github.com/LINGyue-dot
  * @Date: 2021-10-16 15:06:03
  * @LastEditors: qianlong github:https://github.com/LINGyue-dot
- * @LastEditTime: 2021-10-18 15:51:14
+ * @LastEditTime: 2021-10-19 11:12:35
  * @Description:
  */
 /* @flow */
@@ -24,6 +24,7 @@ export function initExtend(Vue: GlobalAPI) {
    * Class inheritance
    */
   Vue.extend = function (extendOptions: Object): Function {
+    // extendOptions 即前面传入的定义的组件对象最终会合并到 Sub.options 中
     extendOptions = extendOptions || {};
     const Super = this;
     const SuperId = Super.cid;

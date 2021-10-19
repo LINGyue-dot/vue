@@ -32,11 +32,13 @@ export function initMixin(Vue: Class<Component>) {
     // 合并配置
     // 将 Vue 构造函数的 options 和用户传入的 options 做了一层合并到 vm.$options 上
     if (options && options._isComponent) {
+      // 组件 内部调用 new Vue
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
       initInternalComponent(vm, options);
     } else {
+      // 外部调用 new Vue
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
@@ -78,6 +80,7 @@ export function initInternalComponent(
   vm: Component,
   options: InternalComponentOptions
 ) {
+  // vm.constructor 就是子组件构造函数 Sub 即 vm.constructor.options 就是 Sub.options
   const opts = (vm.$options = Object.create(vm.constructor.options));
   // doing this because it's faster than dynamic enumeration.
   const parentVnode = options._parentVnode; // point ，右值是通过 createComponentInstanceForVnode 生成的
