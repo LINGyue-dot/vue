@@ -80,6 +80,7 @@ export function lifecycleMixin(Vue: Class<Component>) {
     if (!prevVnode) {
       // initial render
       // 核心函数
+      console.log(vm);
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */);
     } else {
       // updates

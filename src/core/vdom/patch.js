@@ -189,7 +189,8 @@ export function createPatchFunction(backend) {
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode);
       setScope(vnode);
-
+      // !!! qianlong add this to slove __WEEX__ is undefined error
+      var __WEEX__ = false;
       /* istanbul ignore if */
       if (__WEEX__) {
         // in Weex, the default insertion order is parent-first.
@@ -866,7 +867,6 @@ export function createPatchFunction(backend) {
     }
   }
 
-  return;
   /**
    *
    * @param {*} oldVnode 旧的 vnode 可以为空或者是真实的 dom
@@ -876,7 +876,7 @@ export function createPatchFunction(backend) {
    * @returns
    */
   // init ：初始化传入 id 为 app 的 dom 对象
-  function patch(oldVnode, vnode, hydrating, removeOnly) {
+  return function patch(oldVnode, vnode, hydrating, removeOnly) {
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode);
       return;
@@ -982,5 +982,5 @@ export function createPatchFunction(backend) {
 
     invokeInsertHook(vnode, insertedVnodeQueue, isInitialPatch);
     return vnode.elm;
-  }
+  };
 }

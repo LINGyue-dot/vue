@@ -121,7 +121,7 @@ export function _createElement(
       );
     } else if (
       (!data || !data.pre) &&
-      isDef((Ctor = resolveAsset(context.$options, "components", tag)))
+      isDef((Ctor = resolveAsset(context.$options, "components", tag))) // 如果是全局注册的节点
     ) {
       // 如果是已经注册的组件名，创建一个组件类型的 vnode
       // component
