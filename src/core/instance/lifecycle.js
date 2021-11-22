@@ -80,7 +80,6 @@ export function lifecycleMixin(Vue: Class<Component>) {
     if (!prevVnode) {
       // initial render
       // 核心函数
-      console.log(vm);
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */);
     } else {
       // updates
@@ -205,8 +204,10 @@ export function mountComponent(
       measure(`vue ${name} patch`, startTag, endTag);
     };
   } else {
+    // 每个组件都会走到这儿
     updateComponent = () => {
       // 先调用 _render 生成 vNode 调用 _update 函数更新 dom
+      // vm._render()
       vm._update(vm._render(), hydrating);
     };
   }

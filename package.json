@@ -45,10 +45,7 @@
     "commit": "git-cz",
     "debuild": "webpack"
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "node scripts/verify-commit-msg.js"
-  },
+
   "lint-staged": {
     "*.js": [
       "eslint --fix",

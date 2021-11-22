@@ -20,6 +20,7 @@ import { normalizeChildren, simpleNormalizeChildren } from "./helpers/index";
 const SIMPLE_NORMALIZE = 1;
 const ALWAYS_NORMALIZE = 2;
 
+// 生成 VNode
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
 export function createElement(
@@ -41,6 +42,7 @@ export function createElement(
   return _createElement(context, tag, data, children, normalizationType);
 }
 
+// 生成 vnode
 export function _createElement(
   context: Component, // 上下文环境
   tag?: string | Class<Component> | Function | Object, // 标签
@@ -95,9 +97,10 @@ export function _createElement(
   }
   let vnode, ns;
   if (typeof tag === "string") {
+    // 未注册的组件也会走这里
     let Ctor;
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag);
-    if (config.isReservedTag(tag)) {
+    if (config.isReservedTag(tag)) { 
       // 如果是内置的节点直接创建 vnode
       // platform built-in elements
       if (
@@ -111,6 +114,8 @@ export function _createElement(
           context
         );
       }
+
+      // 生成的 vnode
       vnode = new VNode(
         config.parsePlatformTagName(tag),
         data,
@@ -119,6 +124,9 @@ export function _createElement(
         undefined,
         context
       );
+      // console.log('------------------')
+      // console.log(vnode)
+      // console.log('------------------')
     } else if (
       (!data || !data.pre) &&
       isDef((Ctor = resolveAsset(context.$options, "components", tag))) // 如果是全局注册的节点
@@ -126,6 +134,8 @@ export function _createElement(
       // 如果是已经注册的组件名，创建一个组件类型的 vnode
       // component
       vnode = createComponent(Ctor, data, context, children, tag);
+      console.log('component')
+      console.log(vnode)
     } else {
       // 如果是未注册的组件名就创建一个未知标签的 vnode 节点
       // unknown or unlisted namespaced elements

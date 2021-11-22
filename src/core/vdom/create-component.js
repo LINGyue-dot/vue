@@ -151,6 +151,7 @@ export function createComponent(
 
   // resolve constructor options in case global mixins are applied after
   // component constructor creation
+  // 生成组件的构造函数
   resolveConstructorOptions(Ctor);
 
   // transform component v-model data into props & events

@@ -1,3 +1,10 @@
+/*
+ * @Author: qianlong github:https://github.com/LINGyue-dot
+ * @Date: 2021-10-16 15:06:03
+ * @LastEditors: qianlong github:https://github.com/LINGyue-dot
+ * @LastEditTime: 2021-11-22 22:26:50
+ * @Description: 
+ */
 /* @flow */
 
 import { hasOwn } from 'shared/util'
@@ -36,6 +43,7 @@ export function initInjections (vm: Component) {
   }
 }
 
+// inject api 查找
 export function resolveInject (inject: any, vm: Component): ?Object {
   if (inject) {
     // inject is :any because flow is not smart enough to figure out cached

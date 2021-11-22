@@ -7,8 +7,8 @@
  */
 /* @flow */
 
-import { ASSET_TYPES } from "shared/constants";
-import { isPlainObject, validateComponentName } from "../util/index";
+import {ASSET_TYPES} from "shared/constants";
+import {isPlainObject, validateComponentName} from "../util/index";
 
 /**
  * 注册全局 component directive filter
@@ -35,7 +35,7 @@ export function initAssetRegisters(Vue: GlobalAPI) {
           definition = this.options._base.extend(definition); // 将对象转为继承于 Vue 的构造函数
         }
         if (type === "directive" && typeof definition === "function") {
-          definition = { bind: definition, update: definition };
+          definition = {bind: definition, update: definition};
         }
         this.options[type + "s"][id] = definition; // 挂载到属性上
         return definition;

@@ -32,7 +32,7 @@ export function initMixin(Vue: Class<Component>) {
     // 合并配置
     // 将 Vue 构造函数的 options 和用户传入的 options 做了一层合并到 vm.$options 上
     if (options && options._isComponent) {
-      // 组件 内部调用 new Vue
+      // 组件 内部调用 new Vue ，即渲染子组件
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
@@ -53,7 +53,7 @@ export function initMixin(Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm;
-    initLifecycle(vm); // 初始化生命周期
+    initLifecycle(vm); // 初始化生命周期,初始化当前 vm 的属性
     initEvents(vm); // 初始化事件
     initRender(vm); // 初始化渲染
     callHook(vm, "beforeCreate"); // 触发生命周期函数

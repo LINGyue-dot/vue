@@ -16,6 +16,7 @@ import VNode, { createEmptyVNode } from "../vdom/vnode";
 
 import { isUpdatingChildComponent } from "./lifecycle";
 
+// 使得 $attr $listeners 为响应式
 export function initRender(vm: Component) {
   vm._vnode = null; // the root of the child tree
   vm._staticTrees = null; // v-once cached trees
@@ -90,6 +91,7 @@ export function renderMixin(Vue: Class<Component>) {
     return nextTick(fn, this);
   };
 
+  // 生成 vdom
   Vue.prototype._render = function (): VNode {
     const vm: Component = this;
     // !!! NOTICE render 是怎么样的，与 _rendner 具体区别
@@ -107,6 +109,7 @@ export function renderMixin(Vue: Class<Component>) {
     // set parent vnode. this allows render functions to have access
     // to the data on the placeholder node.
     // $vnode 就是其父节点
+    // 如果是根就是 undefined
     vm.$vnode = _parentVnode;
     // render self
     let vnode;
