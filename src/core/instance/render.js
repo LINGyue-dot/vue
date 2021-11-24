@@ -94,10 +94,10 @@ export function renderMixin(Vue: Class<Component>) {
   // 生成 vdom
   Vue.prototype._render = function (): VNode {
     const vm: Component = this;
-    // !!! NOTICE render 是怎么样的，与 _rendner 具体区别
+    // !!! NOTICE render 是怎么样的，与 _render 具体区别
     // vnode 最终是用这个 render 函数与 vm.$createElement 生成的
     const { render, _parentVnode } = vm.$options; // _parentVnode 父组件的 VNode
-
+    // console.log(render)
     if (_parentVnode) {
       vm.$scopedSlots = normalizeScopedSlots(
         _parentVnode.data.scopedSlots,
@@ -159,6 +159,7 @@ export function renderMixin(Vue: Class<Component>) {
     }
     // set parent
     vnode.parent = _parentVnode;
+    // console.log(vnode)
     return vnode;
   };
 }

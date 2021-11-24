@@ -183,6 +183,7 @@ export function mountComponent(
     }
   }
   callHook(vm, "beforeMount");
+  console.log('before Mount')
 
   let updateComponent;
   /* istanbul ignore if */
@@ -207,7 +208,7 @@ export function mountComponent(
     // 每个组件都会走到这儿
     updateComponent = () => {
       // 先调用 _render 生成 vNode 调用 _update 函数更新 dom
-      // vm._render()
+      console.log(vm._render())
       vm._update(vm._render(), hydrating);
     };
   }

@@ -12,9 +12,12 @@ let pending = false
 
 function flushCallbacks () {
   pending = false
+  // 浅拷贝了 callbacks
   const copies = callbacks.slice(0)
+  // 清空 callbacks
   callbacks.length = 0
   for (let i = 0; i < copies.length; i++) {
+    // 执行
     copies[i]()
   }
 }
@@ -32,6 +35,8 @@ function flushCallbacks () {
 // or even between bubbling of the same event (#6566).
 let timerFunc
 
+// 兼容性处理生成 timerFunc 
+// 先后尝试了 Promise MutationObserver setImmediate setTimeout
 // The nextTick behavior leverages the microtask queue, which can be accessed
 // via either native Promise.then or MutationObserver.
 // MutationObserver has wider support, however it is seriously bugged in
@@ -40,6 +45,7 @@ let timerFunc
 // Promise is available, we will use it:
 /* istanbul ignore next, $flow-disable-line */
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
+  // 直接 promise 就直接用 Promise
   const p = Promise.resolve()
   timerFunc = () => {
     p.then(flushCallbacks)
@@ -56,6 +62,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   // PhantomJS and iOS 7.x
   MutationObserver.toString() === '[object MutationObserverConstructor]'
 )) {
+  // 支持 MutationObserver
   // Use MutationObserver where native Promise is not available,
   // e.g. PhantomJS, iOS7, Android 4.4
   // (#6466 MutationObserver is unreliable in IE11)
@@ -71,6 +78,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   }
   isUsingMicroTask = true
 } else if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
+  // 支持 setImmediate
   // Fallback to setImmediate.
   // Technically it leverages the (macro) task queue,
   // but it is still a better choice than setTimeout.
@@ -86,6 +94,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
 
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve
+  // push 进去需要执行的 callbacks
   callbacks.push(() => {
     if (cb) {
       try {

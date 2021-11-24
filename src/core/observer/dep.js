@@ -1,3 +1,10 @@
+/*
+ * @Author: qianlong github:https://github.com/LINGyue-dot
+ * @Date: 2021-10-16 15:06:03
+ * @LastEditors: qianlong github:https://github.com/LINGyue-dot
+ * @LastEditTime: 2021-11-25 00:51:09
+ * @Description: 
+ */
 /* @flow */
 
 import type Watcher from './watcher'
@@ -44,6 +51,7 @@ export default class Dep {
       subs.sort((a, b) => a.id - b.id)
     }
     for (let i = 0, l = subs.length; i < l; i++) {
+      // 触发所有依赖的 wacther 更新
       subs[i].update()
     }
   }

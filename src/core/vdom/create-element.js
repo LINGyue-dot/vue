@@ -134,8 +134,7 @@ export function _createElement(
       // 如果是已经注册的组件名，创建一个组件类型的 vnode
       // component
       vnode = createComponent(Ctor, data, context, children, tag);
-      console.log('component')
-      console.log(vnode)
+
     } else {
       // 如果是未注册的组件名就创建一个未知标签的 vnode 节点
       // unknown or unlisted namespaced elements

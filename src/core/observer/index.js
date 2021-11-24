@@ -154,12 +154,14 @@ export function defineReactive (
   }
 
   let childOb = !shallow && observe(val)
+  console.log(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
+        // 依赖收集
         dep.depend()
         if (childOb) {
           childOb.dep.depend()
@@ -188,6 +190,7 @@ export function defineReactive (
         val = newVal
       }
       childOb = !shallow && observe(newVal)
+      // 派发更新
       dep.notify()
     }
   })

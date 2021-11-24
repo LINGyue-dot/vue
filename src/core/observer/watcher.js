@@ -54,14 +54,14 @@ export default class Watcher {
     if (isRenderWatcher) {
       vm._watcher = this;
     }
-    // push 入属性数组
+    // push 入栈
     vm._watchers.push(this);
     // vm._watchers 是用来监听 vm 上数据变化然后触发重新渲染
     // options
     if (options) {
       this.deep = !!options.deep;
       this.user = !!options.user;
-      this.lazy = !!options.lazy;
+      this.lazy = !!options.lazy; // computed 时候 lazy 为 true
       this.sync = !!options.sync;
       this.before = options.before;
     } else {
@@ -93,6 +93,8 @@ export default class Watcher {
           );
       }
     }
+    // 执行 get 即 updateComponent 就是执行 _render _update 生成 vnode 以及渲染
+    // this.lazy 为 true 说明是 computed 不立即执行回调函数
     this.value = this.lazy ? undefined : this.get();
   }
 
@@ -104,6 +106,7 @@ export default class Watcher {
     let value;
     const vm = this.vm;
     try {
+      // this.getter 
       value = this.getter.call(vm, vm);
     } catch (e) {
       if (this.user) {
@@ -222,6 +225,7 @@ export default class Watcher {
   depend() {
     let i = this.deps.length;
     while (i--) {
+      // 将当前 wacther 添加到依赖类中
       this.deps[i].depend();
     }
   }

@@ -168,12 +168,14 @@ export function getData (data: Function, vm: Component): any {
 
 const computedWatcherOptions = { lazy: true }
 
+// 
 function initComputed (vm: Component, computed: Object) {
   // $flow-disable-line
   const watchers = vm._computedWatchers = Object.create(null)
   // computed properties are just getters during SSR
   const isSSR = isServerRendering()
 
+  // 为每个 computed 计算属性都添加 watcher
   for (const key in computed) {
     const userDef = computed[key]
     const getter = typeof userDef === 'function' ? userDef : userDef.get
@@ -192,12 +194,14 @@ function initComputed (vm: Component, computed: Object) {
         noop,
         computedWatcherOptions
       )
+      console.log(watchers[key])
     }
 
     // component-defined computed properties are already defined on the
     // component prototype. We only need to define computed properties defined
     // at instantiation here.
     if (!(key in vm)) {
+      // 如果 computed 的属性不在 data / prop 
       defineComputed(vm, key, userDef)
     } else if (process.env.NODE_ENV !== 'production') {
       if (key in vm.$data) {
@@ -218,6 +222,7 @@ export function defineComputed (
 ) {
   const shouldCache = !isServerRendering()
   if (typeof userDef === 'function') {
+    // 赋值 get 函数
     sharedPropertyDefinition.get = shouldCache
       ? createComputedGetter(key)
       : createGetterInvoker(userDef)
@@ -239,18 +244,24 @@ export function defineComputed (
       )
     }
   }
+  // target 是 vm
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
 
 function createComputedGetter (key) {
+  // Object.defineProperty 的 get 函数
   return function computedGetter () {
+    // this 指向 vm ，该 watcher 是计算属性的 watcher
     const watcher = this._computedWatchers && this._computedWatchers[key]
+    // deps 哪里来的
     if (watcher) {
-      if (watcher.dirty) {
-        watcher.evaluate()
-      }
-      if (Dep.target) {
-        watcher.depend()
+      if (watcher.dirty) { // computed
+        watcher.evaluate() // 执行 this.get() 计算传入的
+      } 
+      //  有2个 dep 实例分别是 fullName 和 lastName
+      if (Dep.target) { // Dep.target 是当前渲染组件的 watcher
+        watcher.depend() // 将计算属性的 watcher 添加到每个 dep 中
+        // 所以当 fullName 和 lastName set 的时候会触发 当前计算属性的 watcher
       }
       return watcher.value
     }
